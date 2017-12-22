@@ -80,12 +80,17 @@ Aborted (core dumped)
 ```
 
 **Solution:**
+
 Run `pip show protobuf` to show protobuf version in python (installed via pip).
+
 Run `protoc --version` to show protobuf version (installed via apt-get).
+
 These two version are not same.
 
 Uninstall protobuf: `sudo pip uninstall protobuf`
+
 Install protobuf with version 2.6.1: `sudo pip install protobuf==2.6.1`
+
 Then recompile `py-faster-rcnn'.
 
 Refer to https://github.com/BVLC/caffe/issues/5711
