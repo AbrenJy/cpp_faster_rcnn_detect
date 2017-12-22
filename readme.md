@@ -14,17 +14,17 @@ You only need to set only one viarable (`faster_rcnn_path`) to configure environ
 
 This project is Faster-rcnn detector C++ version demo, if you want to learn more about Faster-rcnn, please click [py-faster-rcnn][1].
 
-## **&#9733; 0. Precondition**
+## **0. Precondition**
 
 Make sure your `py-faster-rcnn` works well.
 
-## **&#9733; 1. Download code**
+## **1. Download code**
 
 ```
-    git clone https://github.com/galian123/libfaster_rcnn_cpp
+git clone https://github.com/galian123/libfaster_rcnn_cpp
 ```
 
-## **&#9733; 2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
+## **2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
 
 Like this : `set(faster_rcnn_path "~/git/py-faster-rcnn/")`
 
@@ -33,45 +33,43 @@ If you forget to set `faster_rcnn_path`, error will happen if you run `cmake ..`
 ```
 CMake Error at src/CMakeLists.txt:4 (message):
   Error: please set ${faster_rcnn_path} before run cmake.
-
-    ${faster_rcnn_path} is where your 'py-faster-rcnn' exists.
-
+  ${faster_rcnn_path} is where your 'py-faster-rcnn' exists.
 -- Configuring incomplete, errors occurred!
 ```    
 
-## **&#9733; 3 Modify `main.cpp`**
+## **3 Modify `main.cpp`**
 
 Set your path of `test.prototxt` and `.caffemodel` file in `main.cpp`.
 
-## **&#9733; 4 Build**
+## **4 Build**
 
 Current folder is `libfaster_rcnn_cpp`.
 
 ```
-    mkdir build
-    cd build
-    cmake ..
-    make
+mkdir build
+cd build
+cmake ..
+make
 ```
  
-## **&#9733; 5 Run the program**
+## **5 Run the program**
 
 Current folder is `libfaster_rcnn_cpp`.
 
 **NOTE: run `main` in `./bin` folder. Because hardcode 'test1.jpg' is in `bin` folder.**
 
 ```
-    cd bin
-    ./main
+cd bin
+./main
 ```
 
 This program will detect test1.jpg in bin folder, and print the detected vehicle bounding box, then rectangle bounding box and saved as test.jpg. If you need modify this project to do more, see main.cpp.
 
-## **&#9733; 6 TODO**
+## **6 TODO**
 
 Make main(main.cpp) can receive arguments, or save settings to yaml file.
 
-## **&#9733; 7 Fix protobuf version error**
+## **7 Fix protobuf version error**
 
 ```
 I1222 20:17:27.105358 24948 layer_factory.hpp:77] Creating layer proposal
