@@ -1,27 +1,30 @@
 **Note:**
 This repo is forked from https://github.com/QiangXie/libfaster_rcnn_cpp .
+
 But I found another similar code: https://github.com/YihangLou/FasterRCNN-Encapsulation-Cplusplus
 Most of code is same.
+
 And there is blog to explain the code: http://blog.csdn.net/xyy19920105/article/details/50440957
 
 **What I have done:**
-1. delete redundant 'include' and undependent .so files
-2. set `faster_rcnn_path` for all CMakeLists.txt. You only need to set only one viriable (`faster_rcnn_path`) to configure env.
-3. You don't have to copy gpu_nms.so manually. This is done by cmake now.
+1. Delete redundant 'include' and undependent .so files
+2. Set `faster_rcnn_path` for all CMakeLists.txt. 
+You only need to set only one viarable (`faster_rcnn_path`) to configure environment.
+3. You don't have to copy gpu_nms.so manually. This is done by cmake automatically now.
 
 This project is Faster-rcnn detector C++ version demo, if you want to learn more about Faster-rcnn, please click [py-faster-rcnn][1].
 
-**0 Precondition**
+## **&#9733; 0. Precondition**
 
-Make sure your `py-faster-rcnn` work well.
+Make sure your `py-faster-rcnn` works well.
 
-**1 Clone the project repository**
+## **&#9733; 1. Download code**
 
 ```
     git clone https://github.com/galian123/libfaster_rcnn_cpp
 ```
 
-**2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
+## **&#9733; 2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
 
 Like this : `set(faster_rcnn_path "~/git/py-faster-rcnn/")`
 
@@ -36,11 +39,11 @@ CMake Error at src/CMakeLists.txt:4 (message):
 -- Configuring incomplete, errors occurred!
 ```    
 
-**3 Modify `main.cpp`**
+## **&#9733; 3 Modify `main.cpp`**
 
 Set your path of `test.prototxt` and `.caffemodel` file in `main.cpp`.
 
-**4 Build**
+## **&#9733; 4 Build**
 
 Current folder is `libfaster_rcnn_cpp`.
 
@@ -51,7 +54,7 @@ Current folder is `libfaster_rcnn_cpp`.
     make
 ```
  
-**5 Run the program**
+## **&#9733; 5 Run the program**
 
 Current folder is `libfaster_rcnn_cpp`.
 
@@ -64,11 +67,11 @@ Current folder is `libfaster_rcnn_cpp`.
 
 This program will detect test1.jpg in bin folder, and print the detected vehicle bounding box, then rectangle bounding box and saved as test.jpg. If you need modify this project to do more, see main.cpp.
 
-**6 TODO**
+## **&#9733; 6 TODO**
 
 Make main(main.cpp) can receive arguments, or save settings to yaml file.
 
-**7 Fix protobuf version error**
+## **&#9733; 7 Fix protobuf version error**
 
 ```
 I1222 20:17:27.105358 24948 layer_factory.hpp:77] Creating layer proposal
