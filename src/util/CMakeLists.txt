@@ -9,14 +9,12 @@ set(
 
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
-	/home/xieqiang/Documents/Code/Detection/py-faster-rcnn-master/caffe-fast-rcnn/include
-	/home/xieqiang/Documents/Code/Detection/py-faster-rcnn-master/caffe-fast-rcnn/include/caffe
-	/home/xieqiang/Documents/Code/Detection/py-faster-rcnn-master/lib/nms
+	${faster_rcnn_path}/caffe-fast-rcnn/include
+	${faster_rcnn_path}/caffe-fast-rcnn/include/caffe
+	${faster_rcnn_path}/lib/nms
 	/usr/include
 	/usr/local/include
-	/usr/include/python2.7
-	/usr/local/
-	/opt/intel/mkl/include
 	/usr/local/cuda/include
 	)
+
 add_library(faster_rcnn SHARED ${LIB_SRC_LIST})

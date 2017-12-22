@@ -5,7 +5,6 @@
 #include <vector>
 #include <math.h>
 #include <fstream>
-#include <boost/python.hpp>
 #include "caffe/caffe.hpp"
 #include "gpu_nms.hpp"
 #include <opencv2/core/core.hpp>

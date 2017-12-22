@@ -2,8 +2,10 @@
 using namespace cv;
 int main()
 {
-    string model_file = "/home/xieqiang/Documents/Code/Detection/py-faster-rcnn-master/models/pascal_voc/VGG16/faster_rcnn_end2end/test.prototxt";
-    string weights_file = "/home/xieqiang/Documents/Code/Detection/py-faster-rcnn-master/data/faster_rcnn_models/PascalAndDetrac_iter_50000.caffemodel";
+    string py_faster_rcnn_path = "/home/<your_name>/git/py-faster-rcnn/"; // NOTE: set your path
+    string net_type = "VGG_CNN_M_1024";
+    string model_file = py_faster_rcnn_path + "models/pascal_voc/" + net_type + "/faster_rcnn_end2end/test.prototxt";
+    string weights_file = py_faster_rcnn_path + "output/faster_rcnn_end2end/voc_2007_trainval/vgg_cnn_m_1024_faster_rcnn_iter_70000.caffemodel";
     int GPUID=0;
     vector<vector<int> > ans;
     Caffe::SetDevice(GPUID);
