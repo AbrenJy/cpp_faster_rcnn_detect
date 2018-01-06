@@ -7,12 +7,20 @@ Most of code is same.
 And there is blog to explain the code: http://blog.csdn.net/xyy19920105/article/details/50440957
 
 **What I have done:**
+updated on 2018-01-06.
 1. Delete redundant 'include' and undependent .so files
 2. Set `faster_rcnn_path` for all CMakeLists.txt. 
 You only need to set only one viarable (`faster_rcnn_path`) to configure environment.
 3. You don't have to copy gpu_nms.so manually. This is done by cmake automatically now.
+4. Put some configs into yml file in 'config' folder. Most of the options can be set in yml file.
+5. Use gflags to process parameters. The config file (yml file) follows '-yml_file'. 
+You can also set '<KEY> <VALUE>' to override the same value in yml file. Run `faster_rcnn_detect -helpshort` for more help info.
+6. Fix some issues: 
+(1) fix the image scale rate. Big image can scale to small. Small image can scale to big.
+(2) check all object classes (e.g. CLASS_NUM is 21).
 
-This project is Faster-rcnn detector C++ version demo, if you want to learn more about Faster-rcnn, please click [py-faster-rcnn][1].
+This project is Faster-rcnn detector C++ version, the code flow is almost same as demo.py.
+If you want to learn more about Faster-rcnn, please click [py-faster-rcnn][1].
 
 ## **0. Precondition**
 
@@ -37,11 +45,29 @@ CMake Error at src/CMakeLists.txt:4 (message):
 -- Configuring incomplete, errors occurred!
 ```    
 
-## **3 Modify `main.cpp`**
+## **3. Install dependent libs**
 
-Set your path of `test.prototxt` and `.caffemodel` file in `main.cpp`.
+* install gflags:
 
-## **4 Build**
+`sudo apt-get install -y --no-install-recommends libgflags-dev`
+
+* install yaml lib: 
+
+```
+git clone https://github.com/jbeder/yaml-cpp
+cd yaml-cpp
+mkdir build
+cd build
+cmake ..
+make -j8
+sudo make install
+```
+
+## **4 Modify yml file in `config` folder.**
+
+Set correct MODEL_FILE (test.prototxt) and TRAINED_FILE (xxx.caffemodel).
+
+## **5 Build**
 
 Current folder is `libfaster_rcnn_cpp`.
 
@@ -54,20 +80,14 @@ make
  
 ## **5 Run the program**
 
-Current folder is `libfaster_rcnn_cpp`.
-
-**NOTE: run `main` in `./bin` folder. Because hardcode 'test1.jpg' is in `bin` folder.**
+Current folder is `libfaster_rcnn_cpp/build`.
 
 ```
-cd bin
-./main
+./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
 ```
 
-This program will detect test1.jpg in bin folder, and print the detected vehicle bounding box, then rectangle bounding box and saved as test.jpg. If you need modify this project to do more, see main.cpp.
+Default output folder is `./labeled_images`. You can find the results of 3 images for example.
 
-## **6 TODO**
-
-Make main(main.cpp) can receive arguments, or save settings to yaml file.
 
 ## **7 Fix protobuf version error**
 
@@ -81,16 +101,12 @@ Aborted (core dumped)
 
 **Solution:**
 
-Run `pip show protobuf` to show protobuf version in python (installed via pip).
-
-Run `protoc --version` to show protobuf version (installed via apt-get).
-
+Run `pip show protobuf` to show protobuf version in python (installed via pip). <br>
+Run `protoc --version` to show protobuf version (installed via apt-get). <br>
 These two version are not same.
 
-Uninstall protobuf: `sudo pip uninstall protobuf`
-
-Install protobuf with version 2.6.1: `sudo pip install protobuf==2.6.1`
-
+Uninstall protobuf: `sudo pip uninstall protobuf` <br>
+Install protobuf with version 2.6.1: `sudo pip install protobuf==2.6.1` <br>
 Then recompile `py-faster-rcnn'.
 
 Refer to https://github.com/BVLC/caffe/issues/5711

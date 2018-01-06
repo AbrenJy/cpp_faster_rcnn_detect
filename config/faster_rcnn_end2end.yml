@@ -1,0 +1,16 @@
+GPUID: 0
+
+MODEL_FILE: "/path/to/py-faster-rcnn/models/pascal_voc/VGG_CNN_M_1024/faster_rcnn_end2end/test.prototxt"
+
+# this is also called weights file
+TRAINED_FILE: "/path/to/py-faster-rcnn/output/faster_rcnn_end2end/voc_2007_trainval/vgg_cnn_m_1024_faster_rcnn_iter_70000.caffemodel"
+
+# if these values are changed, the project must be re-compiled. So we can't modify them in config file.
+# change them in source code and compile again.
+CLASS_NUM: 21
+CONF_THRESH: 0.7
+NMS_THRESH: 0.3
+MAX_SIZE: 1000
+SCALE_SIZE: 600
+
+
