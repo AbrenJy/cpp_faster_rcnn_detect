@@ -1,9 +1,7 @@
 **Note:**
-This repo is forked from https://github.com/QiangXie/libfaster_rcnn_cpp .
-
-But I found another similar code: https://github.com/YihangLou/FasterRCNN-Encapsulation-Cplusplus
-Most of code is same.
-
+This repo is forked from https://github.com/QiangXie/libfaster_rcnn_cpp . <br>
+But I found another similar code: https://github.com/YihangLou/FasterRCNN-Encapsulation-Cplusplus <br>
+Most of code is same.<br>
 And there is blog to explain the code: http://blog.csdn.net/xyy19920105/article/details/50440957
 
 **What I have done:**
