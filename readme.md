@@ -86,6 +86,11 @@ Current folder is `libfaster_rcnn_cpp/build`.
 
 Default output folder is `./labeled_images`. You can find the results of 3 images for example.
 
+To get more help, run `./faster_rcnn_detect -helpshort`.
+
+You can pass parameters override the value in yml file, like this: <br>
+`./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml GPUID 1 CONF_THRESH 0.6` <br>
+`GPUID 1 CONF_THRESH 0.6` are `<KEY> <VALUE>` pairs. The `<KEY>` can be the key in yml file.
 
 ## **7 Fix protobuf version error**
 
