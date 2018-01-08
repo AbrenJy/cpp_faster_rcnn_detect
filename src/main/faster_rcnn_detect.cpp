@@ -41,9 +41,11 @@ DEFINE_string(imgdir, "", "Set the input directory contains images.");
 DEFINE_string(outdir, "./labeled_images",
     "Set the output directory which saves labeled images.");
 DEFINE_string(yml_file, "", "Set config file (xxx.yml)");
+DEFINE_bool(showlabel, true, "show class name of the object and score.");
 DEFINE_bool(verbose, false, "show more logs");
 
 static bool verbose = false;
+static bool showlabel = true;
 
 bool checkDirExist(const char *dirName) {
     struct stat dirInfo = {0};
@@ -113,6 +115,44 @@ void tryAddSlash(char dir[]) {
     }
 }
 
+void drawRectOnImage(cv::Mat& im, vector<float> pos) {
+    int thickness = 2;
+    Scalar color(255, 0, 0);// color is blue.
+
+    Mat overlay;
+    im.copyTo(overlay);
+	rectangle(overlay, cvPoint(pos[0], pos[1]),
+        cvPoint(pos[2] + pos[0], pos[3] + pos[1]),
+        color, thickness);
+
+    double alpha = 0.5;
+    cv::addWeighted(overlay, alpha, im, 1 - alpha, 0, im);
+}
+
+// voffset: vertical offset
+int drawTextOnImage(cv::Mat& im, vector<float> pos, float voffset, string text) {
+    int fontFace = FONT_HERSHEY_PLAIN;
+    double fontScale = 1.0;
+    int thickness = 1;
+
+    int baseline = 0;
+    Size textSize = getTextSize(text, fontFace, fontScale, thickness, &baseline);
+
+    Mat overlay;
+    im.copyTo(overlay);
+
+    rectangle(overlay, cvPoint(pos[0], pos[1] + voffset),
+        cvPoint(pos[0] + textSize.width, pos[1] + textSize.height + thickness + voffset),
+        Scalar(255, 128, 128), CV_FILLED);
+
+    Point textOrg(pos[0], pos[1] + textSize.height + thickness + voffset);
+    cv::putText(overlay, text, textOrg,
+        fontFace, fontScale, Scalar(255, 255, 255), thickness, LINE_AA);
+    double alpha = 0.75;
+    cv::addWeighted(overlay, alpha, im, 1 - alpha, 0, im);
+    return textSize.height + thickness;
+}
+
 int main(int argc, char **argv) {
     gflags::SetUsageMessage("faster_rcnn_detect is used to identify objects in image file.\n"
         "Please use 'faster_rcnn_detect -helpshort' to get only help message for faster_rcnn_detect. \n"
@@ -135,12 +175,14 @@ int main(int argc, char **argv) {
     }
 
     verbose = FLAGS_verbose;
+    showlabel = FLAGS_showlabel;
     string model_file, weights_file;
     int gpuid = 0;
     string imgdir = FLAGS_imgdir;
     string outdir = FLAGS_outdir;
     int class_num, max_size, scale_size;
     float conf_thresh, nms_thresh;
+    vector<string> class_names;
 
     const string yml_file = FLAGS_yml_file;
 	if (!yml_file.empty()) {
@@ -158,6 +200,14 @@ int main(int argc, char **argv) {
         nms_thresh = config[KEY_NMS_THRESH].as<float>();
         max_size = config[KEY_MAX_SIZE].as<int>();
         scale_size = config[KEY_SCALE_SIZE].as<int>();
+
+        const YAML::Node& class_name_node = config["CLASS_NAME"];
+        for (int i = 0; i < class_name_node.size(); i++) {
+            const string name = class_name_node[i].as<string>();
+            if (verbose) cout << name << " ";
+            class_names.push_back(name);
+        }
+        if (verbose) cout << endl;
 	}
 
     // key value pairs
@@ -237,21 +287,30 @@ int main(int argc, char **argv) {
         char *imgname = imagenames[i]->d_name;
         char fullname[512] = {0};
         sprintf(fullname, "%s%s", imgDir, imgname);
+        cout << "------------------------------" << endl;
         cout << "Detect image " << fullname << endl;
         cv::Mat im = cv::imread(fullname);
 
-        vector<vector<int> > ans;
+        vector<vector<float> > ans;
         ans = det.Detect(im);
-        for(int i = 0; i < ans.size(); i++){
-            for(int j = 0; j < ans[i].size(); j++){
-                cout << ans[i][j] << " ";
+        for(int i = 0; i < ans.size(); i++) {
+            if (verbose) {
+                for(int j = 0; j < ans[i].size(); j++){
+                    cout << ans[i][j] << " ";
+                }
+                cout << endl;
             }
-            cout << endl;
+            if (verbose) cout << "class name: " << class_names[ans[i][4]] << endl;
+            if (verbose) cout << "score: " << ans[i][5] << endl;
             //ans[i][0] is xmin, ans[i][1] is ymin, ans[i][2] is width, ans[i][3] is height
-	        rectangle(im,
-                cvPoint(ans[i][0], ans[i][1]),
-                cvPoint(ans[i][2] + ans[i][0], ans[i][3] + ans[i][1]),
-                Scalar(255,0,0), 2, 4, 0);// color is blue, thick is 2.
+            //ans[i][4] is class type, ans[i][5] is score
+            drawRectOnImage(im, ans[i]);
+
+            if (showlabel) {
+                int offset = drawTextOnImage(im, ans[i], 0, class_names[ans[i][4]]);
+                int margin = 2;
+                drawTextOnImage(im, ans[i], offset + margin, to_string(ans[i][5]));
+            }
         }
         char outname[512] = {0};
         sprintf(outname, "%slabled_%s", outDir, imgname);
@@ -260,5 +319,5 @@ int main(int argc, char **argv) {
         free(imagenames[i]);
     }
     free(imagenames);
-   return 0;
+    return 0;
 }

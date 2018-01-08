@@ -21,7 +21,7 @@ class Detector {
     public:
         Detector(const string& model_file, const string& weights_file,
             int class_num, int max_size, int scale_size, float conf_thresh, float nms_thresh);
-        vector<vector<int> > Detect(cv::Mat & cv_img);
+        vector<vector<float> > Detect(cv::Mat & cv_img);
         void bbox_transform_inv(const int num, const float* box_deltas, const float* pred_cls, float* boxes, float* pred, int img_height, int img_width);
         void boxes_sort(int num, const float* pred, float* sorted_pred);
 

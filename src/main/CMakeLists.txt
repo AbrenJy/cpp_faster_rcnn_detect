@@ -11,6 +11,9 @@ set(CMAKE_CXX_FLAGS "-g -std=c++11")
 set(MY_PROJECT_DIR ${faster_rcnn_cpp_SOURCE_DIR})
 message("\${MY_PROJECT_DIR} :" ${MY_PROJECT_DIR})
 
+set(CMAKE_INSTALL_RPATH ${MY_PROJECT_DIR}/lib)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
+
 find_package( OpenCV REQUIRED )
 
 include_directories(
@@ -52,3 +55,7 @@ target_link_libraries(
     libyaml-cpp.so
     /usr/lib/x86_64-linux-gnu/libgflags.so
 	)
+
+install(TARGETS faster_rcnn_detect
+    DESTINATION $ENV{HOME}/bin)
+

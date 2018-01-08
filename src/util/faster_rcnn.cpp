@@ -20,7 +20,7 @@ static int CLASS_NUM = 21;
 
 Detector::Detector(const string& model_file, const string& weights_file,
     int class_num, int max_size, int scale_size, float conf_thresh, float nms_thresh) {
-    net_ = shared_ptr<Net<float> >(new Net<float>(model_file, caffe::TEST));
+    net_ = boost::shared_ptr<Net<float> >(new Net<float>(model_file, caffe::TEST));
     net_->CopyTrainedLayersFrom(weights_file);
     
     CLASS_NUM = class_num;
@@ -32,9 +32,9 @@ Detector::Detector(const string& model_file, const string& weights_file,
     cout << "Detector init success!" << endl;
 }
 
-vector<vector<int> > Detector::Detect(cv::Mat & cv_img)
+vector<vector<float> > Detector::Detect(cv::Mat & cv_img)
 {
-    vector<vector<int> > bboxes;
+    vector<vector<float> > bboxes;
     if(cv_img.empty()){
     	std::cout<<"Bad image!"<<endl;
     	return bboxes;
@@ -104,10 +104,6 @@ vector<vector<int> > Detector::Detect(cv::Mat & cv_img)
 		}
 	}
 
-    Blob<float> *input_layer1 = net_->input_blobs()[0];
-    Blob<float> *input_layer2 = net_->blob_by_name("data").get();
-    cout << "input_layer1: " << input_layer1 << ", input_layer2: " << input_layer2 << endl;
- 
 	net_->blob_by_name("data")->Reshape(1, 3, height, width);
     net_->Reshape();
 	Blob<float> * input_blobs= net_->input_blobs()[0];
@@ -132,7 +128,6 @@ vector<vector<int> > Detector::Detect(cv::Mat & cv_img)
 	net_->ForwardFrom(0);
 	bbox_delt = net_->blob_by_name("bbox_pred")->cpu_data();
 	num = net_->blob_by_name("rois")->num();
-    cout << "net_->blob_by_name(\"rois\")->num(): " << num << endl;
 
     // ROIs
 	rois = net_->blob_by_name("rois")->cpu_data();
@@ -164,14 +159,14 @@ vector<vector<int> > Detector::Detect(cv::Mat & cv_img)
 	    }
 	    boxes_sort(num, pred_per_class, sorted_pred_cls);
 	    _nms(keep, &num_out, sorted_pred_cls, num, 5, NMS_THRESH, 0);
-        cout << "num: " << num << ", num_out: " << num_out << endl;
-	    for(int i_ = 0;sorted_pred_cls[keep[i_]*5+4] > CONF_THRESH && i_ < num_out;++i_){
-            cout << "got " << i_ << endl;
-            vector<int> bbox;
-	        bbox.push_back((int)sorted_pred_cls[keep[i_]*5+0]);
-	    	bbox.push_back((int)sorted_pred_cls[keep[i_]*5+1]);	
-	    	bbox.push_back((int)sorted_pred_cls[keep[i_]*5+2] - (int)sorted_pred_cls[keep[i_]*5+0]);
-	    	bbox.push_back((int)sorted_pred_cls[keep[i_]*5+3] - (int)sorted_pred_cls[keep[i_]*5+1]);	
+	    for(int i_ = 0; sorted_pred_cls[keep[i_]*5+4] > CONF_THRESH && i_ < num_out; ++i_){
+            vector<float> bbox;
+	        bbox.push_back(sorted_pred_cls[keep[i_]*5+0]);
+	    	bbox.push_back(sorted_pred_cls[keep[i_]*5+1]);	
+	    	bbox.push_back(sorted_pred_cls[keep[i_]*5+2] - sorted_pred_cls[keep[i_]*5+0]);
+	    	bbox.push_back(sorted_pred_cls[keep[i_]*5+3] - sorted_pred_cls[keep[i_]*5+1]);	
+            bbox.push_back(i); // class type
+            bbox.push_back(sorted_pred_cls[keep[i_]*5+4]); // score
 	    	bboxes.push_back(bbox);
 	    }
     }
