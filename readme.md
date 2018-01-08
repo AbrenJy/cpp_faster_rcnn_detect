@@ -92,6 +92,12 @@ You can pass parameters override the value in yml file, like this: <br>
 `./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml GPUID 1 CONF_THRESH 0.6` <br>
 `GPUID 1 CONF_THRESH 0.6` are `<KEY> <VALUE>` pairs. The `<KEY>` can be the key in yml file.
 
+To display class name of the object and score:
+```
+./faster_rcnn_detect -showlabel -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
+```
+
+
 ## **7 Fix protobuf version error**
 
 ```
