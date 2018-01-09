@@ -27,10 +27,10 @@ Make sure your `py-faster-rcnn` works well.
 ## **1. Download code**
 
 ```
-git clone https://github.com/galian123/libfaster_rcnn_cpp
+git clone https://github.com/galian123/cpp_faster_rcnn_detect
 ```
 
-## **2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
+## **2 set `faster_rcnn_path` in `CMakeLists.txt`**
 
 Like this : `set(faster_rcnn_path "~/git/py-faster-rcnn/")`
 
@@ -67,7 +67,7 @@ Set correct MODEL_FILE (test.prototxt) and TRAINED_FILE (xxx.caffemodel).
 
 ## **5 Build**
 
-Current folder is `libfaster_rcnn_cpp`.
+Current folder is `cpp_faster_rcnn_detect`.
 
 ```
 mkdir build
@@ -76,9 +76,9 @@ cmake ..
 make
 ```
  
-## **5 Run the program**
+## **5 Run**
 
-Current folder is `libfaster_rcnn_cpp/build`.
+Current folder is `cpp_faster_rcnn_detect/build`.
 
 ```
 ./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
@@ -96,7 +96,12 @@ To display class name of the object and score:
 ```
 ./faster_rcnn_detect -showlabel -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
 ```
+`-showlabel`: default value is true, so you don't need to set it.
 
+To display rectangle only: use `-noshowlabel` or `-showlabel=false`
+``
+./faster_rcnn_detect -imgdir ../tested_images/ -yml_file ../config/faster_rcnn_end2end.yml -outdir ./labeled_images_simple -noshowlabel
+```
 
 ## **7 Fix protobuf version error**
 
