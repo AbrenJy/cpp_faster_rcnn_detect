@@ -76,30 +76,31 @@ cmake ..
 make
 ```
  
-## **5 Run**
+## **6 Run**
 
 Current folder is `cpp_faster_rcnn_detect/build`.
+
+* To test images in some folder
 
 ```
 ./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
 ```
-
 Default output folder is `./labeled_images`. You can find the results of 3 images for example.
 
-To get more help, run `./faster_rcnn_detect -helpshort`.
+* To get more help, run `./faster_rcnn_detect -helpshort`.
 
-You can pass parameters override the value in yml file, like this: <br>
+* You can pass parameters override the value in yml file, like this: <br>
 `./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml GPUID 1 CONF_THRESH 0.6` <br>
 `GPUID 1 CONF_THRESH 0.6` are `<KEY> <VALUE>` pairs. The `<KEY>` can be the key in yml file.
 
-To display class name of the object and score:
+* To display class name of the object and score:
 ```
 ./faster_rcnn_detect -showlabel -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
 ```
 `-showlabel`: default value is true, so you don't need to set it.
 
-To display rectangle only: use `-noshowlabel` or `-showlabel=false`
-``
+* To display rectangle only: use `-noshowlabel` or `-showlabel=false`
+```
 ./faster_rcnn_detect -imgdir ../tested_images/ -yml_file ../config/faster_rcnn_end2end.yml -outdir ./labeled_images_simple -noshowlabel
 ```
 
