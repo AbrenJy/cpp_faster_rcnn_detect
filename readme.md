@@ -27,10 +27,10 @@ Make sure your `py-faster-rcnn` works well.
 ## **1. Download code**
 
 ```
-git clone https://github.com/galian123/libfaster_rcnn_cpp
+git clone https://github.com/galian123/cpp_faster_rcnn_detect
 ```
 
-## **2 set `faster_rcnn_path` in `src/CMakeLists.txt`**
+## **2 set `faster_rcnn_path` in `CMakeLists.txt`**
 
 Like this : `set(faster_rcnn_path "~/git/py-faster-rcnn/")`
 
@@ -67,7 +67,7 @@ Set correct MODEL_FILE (test.prototxt) and TRAINED_FILE (xxx.caffemodel).
 
 ## **5 Build**
 
-Current folder is `libfaster_rcnn_cpp`.
+Current folder is `cpp_faster_rcnn_detect`.
 
 ```
 mkdir build
@@ -76,27 +76,26 @@ cmake ..
 make
 ```
  
-## **5 Run the program**
+## **6 Run**
 
-Current folder is `libfaster_rcnn_cpp/build`.
+Current folder is `cpp_faster_rcnn_detect/build`.
 
-```
-./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
-```
-
+* To test images in some folder <br>
+`./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml` <br>
 Default output folder is `./labeled_images`. You can find the results of 3 images for example.
 
-To get more help, run `./faster_rcnn_detect -helpshort`.
+* To get more help, run `./faster_rcnn_detect -helpshort`.
 
-You can pass parameters override the value in yml file, like this: <br>
+* You can pass parameters override the value in yml file, like this: <br>
 `./faster_rcnn_detect -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml GPUID 1 CONF_THRESH 0.6` <br>
-`GPUID 1 CONF_THRESH 0.6` are `<KEY> <VALUE>` pairs. The `<KEY>` can be the key in yml file.
+**`GPUID 1 CONF_THRESH 0.6`** are `<KEY> <VALUE>` pairs. The `<KEY>` can be the key in yml file.
 
-To display class name of the object and score:
-```
-./faster_rcnn_detect -showlabel -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml
-```
+* To display class name of the object and score: <br>
+`./faster_rcnn_detect -showlabel -imgdir ../tested_images -yml_file ../config/faster_rcnn_end2end.yml` <br>
+`-showlabel`: default value is true, so you don't need to set it.
 
+* To display rectangle only: use `-noshowlabel` or `-showlabel=false` <br>
+`./faster_rcnn_detect -imgdir ../tested_images/ -yml_file ../config/faster_rcnn_end2end.yml -outdir ./labeled_images_simple -noshowlabel`
 
 ## **7 Fix protobuf version error**
 
