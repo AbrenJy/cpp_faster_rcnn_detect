@@ -12,7 +12,7 @@ You only need to set only one viarable (`faster_rcnn_path`) to configure environ
 3. You don't have to copy gpu_nms.so manually. This is done by cmake automatically now.
 4. Put some configs into yml file in 'config' folder. Most of the options can be set in yml file.
 5. Use gflags to process parameters. The config file (yml file) follows '-yml_file'. 
-You can also set '<KEY> <VALUE>' to override the same value in yml file. Run `faster_rcnn_detect -helpshort` for more help info.
+You can also set `'<KEY> <VALUE>'` to override the same value in yml file. Run `faster_rcnn_detect -helpshort` for more help info.
 6. Fix some issues: 
 (1) fix the image scale rate. Big image can scale to small. Small image can scale to big.
 (2) check all object classes (e.g. CLASS_NUM is 21).
